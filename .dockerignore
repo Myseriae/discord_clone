@@ -1,0 +1,12 @@
+**/bin/
+**/obj/
+**/.vs/
+**/.idea/
+**/.git/
+**/.gitignore
+**/*.user
+**/node_modules/
+**/appsettings.Development.json
+nginx/
+docker-compose*.yml
+README.md

@@ -1,0 +1,18 @@
+{
+  "Logging": {
+    "LogLevel": {
+      "Default": "Information",
+      "Microsoft.AspNetCore": "Warning"
+    }
+  },
+  "ConnectionStrings": {
+    "DefaultConnection": "Host=localhost;Port=5433;Database=discordclone;Username=postgres;Password=postgres"
+  },
+  "Jwt": {
+    "Issuer": "DiscordClone",
+    "Audience": "DiscordCloneClient",
+    "Secret": "replace-with-a-local-dev-signing-key-at-least-32-chars",
+    "AccessTokenMinutes": 15,
+    "RefreshTokenDays": 7
+  }
+}

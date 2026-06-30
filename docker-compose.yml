@@ -1,0 +1,56 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: discordclone-postgres
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-discordclone}
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+    ports:
+      # Published on 5433 by default to avoid clashing with a local Postgres on 5432.
+      - "${POSTGRES_PORT:-5433}:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-postgres} -d ${POSTGRES_DB:-discordclone}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - discordclone
+
+  api:
+    build:
+      context: .
+      dockerfile: src/DiscordClone.API/Dockerfile
+    container_name: discordclone-api
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      ASPNETCORE_ENVIRONMENT: ${ASPNETCORE_ENVIRONMENT:-Production}
+      ConnectionStrings__DefaultConnection: "Host=postgres;Port=5432;Database=${POSTGRES_DB:-discordclone};Username=${POSTGRES_USER:-postgres};Password=${POSTGRES_PASSWORD:-postgres}"
+      Jwt__Secret: ${JWT_SECRET:-dev-only-insecure-signing-key-change-me-32+chars}
+    expose:
+      - "8080"
+    networks:
+      - discordclone
+
+  nginx:
+    image: nginx:alpine
+    container_name: discordclone-nginx
+    depends_on:
+      - api
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+    networks:
+      - discordclone
+
+volumes:
+  postgres_data:
+
+networks:
+  discordclone:
+    driver: bridge
