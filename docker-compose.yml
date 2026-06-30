@@ -30,7 +30,8 @@ services:
     environment:
       ASPNETCORE_ENVIRONMENT: ${ASPNETCORE_ENVIRONMENT:-Production}
       ConnectionStrings__DefaultConnection: "Host=postgres;Port=5432;Database=${POSTGRES_DB:-discordclone};Username=${POSTGRES_USER:-postgres};Password=${POSTGRES_PASSWORD:-postgres}"
-      Jwt__Secret: ${JWT_SECRET:-dev-only-insecure-signing-key-change-me-32+chars}
+      # Required — set in .env (see .env.example). Fails loudly rather than using an insecure default.
+      Jwt__Secret: ${JWT_SECRET:?JWT_SECRET is required — copy .env.example to .env and set it}
     expose:
       - "8080"
     networks:
