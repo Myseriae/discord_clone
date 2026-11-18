@@ -10,7 +10,6 @@ public class ServerMappingProfile : Profile
     {
         CreateMap<Server, ServerResponse>();
         CreateMap<Server, ServerDetailResponse>();
-        // ChannelType (enum) maps to its string name, matching how it's stored.
-        CreateMap<Channel, ChannelResponse>();
+        // Channel → ChannelResponse lives in ChannelMappingProfile (Channels feature).
     }
 }

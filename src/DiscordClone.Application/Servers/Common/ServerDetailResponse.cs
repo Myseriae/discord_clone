@@ -1,3 +1,5 @@
+using DiscordClone.Application.Channels.Common;
+
 namespace DiscordClone.Application.Servers.Common;
 
 /// <summary>Detailed view of a server including its channels, returned by get-by-id.</summary>

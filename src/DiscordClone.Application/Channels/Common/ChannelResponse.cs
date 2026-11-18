@@ -1,4 +1,4 @@
-namespace DiscordClone.Application.Servers.Common;
+namespace DiscordClone.Application.Channels.Common;
 
 public record ChannelResponse(
     Guid Id,
